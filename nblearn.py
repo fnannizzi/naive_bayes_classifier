@@ -10,8 +10,12 @@ class Feature:
         self.probability = 0
 
 def match_string(word, value):
-    regex = 
-
+    boundary = "\\b"
+    pattern = re.compile(boundary + value + boundary)
+    if pattern.match(word):
+        return true
+    else:
+        return false
 
 def train():
 
