@@ -1,0 +1,12 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage, amsmath, multirow, float}
+\restylefloat{table}
+\begin{document}
+
+\title{Homework }
+\author{Francesca Nannizzi}
+\date{00.00.13}
+\maketitle
+
+
+\end{document}
