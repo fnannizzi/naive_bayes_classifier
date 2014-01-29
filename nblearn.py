@@ -13,6 +13,24 @@ class Word:
     def incr(self):
         self.frequency += 1
 
+class Classification:
+    def __init__(self, name):
+        self.name = name
+        self.frequency = 1
+        self.unique_words = 0
+        self.vocabulary = []
+        self.total_words = 0
+
+    def add_to_vocabulary(self, word):
+        self.vocabulary.append(word)
+        self.unique_words += 1
+
+    def incr_frequency(self):
+        self.frequency += 1
+
+    def incr_total_words(self):
+        self.total_words += 1
+
 
 # function to match strings exactly
 def match_string(word, text):
@@ -36,7 +54,7 @@ def train():
 
 
     classes = [] # list of possible classes
-    class_vocabulary = [] # list of lists, separate list of vocabulary words for each class
+    total_unique_words = 0 # number of unique words in the training set
 
     with open(training_filename) as f:
         for line in f:
@@ -45,36 +63,50 @@ def train():
             text = class_and_text[1]
             
             # if the class is a new one, add it to the list of possible classes
-            if classname not in classes:
-                classes.append(classname)
+            class_matches = filter(lambda x: match_string(classname, x.name), classes)
+            if not class_matches:
+                new_class = Classification(classname)
+                classes.append(new_class)
             
             # get the index of the class so we add the features to the correct index
-            class_index = classes.index(classname)
+            class_index = classes.index(new_class)
+            
+            # increment the frequency of the class
+            classes[class_index].incr_frequency()
             
             # if the class vocabulary has not been initialized, create a new vocabulary list
-            if len(class_vocabulary) <= class_index:
-                temp_array = []
-                class_vocabulary.append(temp_array)
+            if len(classes[class_index].vocabulary) == 0:
                 first_word_and_text = text.split(' ', 1)
                 first_word = first_word_and_text[0]
                 text = first_word_and_text[1]
                 new_word = Word(first_word.lower())
-                class_vocabulary[class_index].append(new_word)
-                print class_vocabulary[class_index]
+                classes[class_index].vocabulary.append(new_word)
 
             for word in text.split(' '):
+                # increment the number of words in the class
+                classes[class_index].incr_total_words()
                 word = word.lower()
-                matches = filter(lambda x: match_string(word, x.text), class_vocabulary[class_index]) # store all matching words in matches
+                word_is_unique = True
+                
+                for c in classes:
+                    matches = filter(lambda x: match_string(word, x.text), c.vocabulary) # store all matching words in matches
                     
-                # if the word is not already in the class' vocabulary, add it
-                if not matches:
-                    new_word = Word(word)
-                    class_vocabulary[class_index].append(new_word)
-                elif word not in matches:
-                    new_word = Word(word)
-                    class_vocabulary[class_index].append(new_word)
-                else:
-                    class_vocabulary[class_index].incr()
+                    if not matches:
+                        if c == classes[class_index]: # if the word is not already in the class' vocabulary, add it
+                            new_word = Word(word)
+                            classes[class_index].vocabulary.append(new_word)
+                    elif word not in matches:
+                        if c == classes[class_index]: # if the word is not already in the class' vocabulary, add it
+                            new_word = Word(word)
+                            classes[class_index].vocabulary.append(new_word)
+                    else:
+                        classes[class_index].vocabulary[classes[class_index].vocabulary.index(word)].incr() # increment the frequency of the existing word
+                        word_is_unique = False
+
+                # increment the number of total words in the training set
+                if word_is_unique:
+                    total_unique_words += 1
+
 
 
 
