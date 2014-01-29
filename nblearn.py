@@ -28,12 +28,30 @@ def train():
         sys.exit(0)
 
 
-    features = []
+    classes = [] # list of possible classes
+    class_features = [] # list of lists, separate list of features for each class
 
     with open(training_filename) as f:
         for line in f:
-            for word in line.split():
-                matches = filter(lambda x: match_string(word, x.value), features) # store all matching words in matches
+            class_and_text = line.split(' ', 1) # split the first word (the class identifier) from the rest of the text
+            classname = class_and_text[0]
+            text = class_and_text[1]
+            
+            # if the class is a new one, add it to the list of possible classes
+            if classname not in classes:
+                classes.append(classname)
+            
+            # get the index of the class so we add the features to the correct index
+            class_index = classes.index(classname)
+            
+            for word in text.split(' '):
+                matches = filter(lambda x: match_string(word, x.value), class_features) # store all matching words in matches
+                print matchesgit
+
+
+
+
+
 
 
 
