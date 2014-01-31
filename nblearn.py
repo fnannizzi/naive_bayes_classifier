@@ -1,36 +1,20 @@
 #! /usr/bin/env python
 
 import sys
-import re
 
 # class to store information used in the model
 class Classification:
     def __init__(self, name):
         self.name = name
         self.frequency = 0
-        self.unique_words = 0
         self.vocabulary = dict()
         self.total_words = 0
-
-    #def add_to_vocabulary(self, word):
-    #       self.vocabulary.append(word)
-    #       self.unique_words += 1
 
     def incr_frequency(self):
         self.frequency += 1
 
     def incr_total_words(self):
         self.total_words += 1
-
-
-# function to match strings exactly
-def match_string(word, text):
-    boundary = "\\b"
-    pattern = re.compile(boundary + re.escape(text) + boundary)
-    if pattern.match(re.escape(word)):
-        return True
-    else:
-        return False
 
 
 def train():
@@ -70,6 +54,7 @@ def train():
             classes[class_index].incr_frequency()
 
             for word in text.split(' '):
+                word = word.rstrip('\n')
                 if (word == "") or (word == " "):
                     continue
                 
@@ -91,27 +76,27 @@ def train():
                 # increment the number of total words in the training set
                 if word_is_unique:
                     total_unique_words += 1
-                    print total_unique_words
+                    #print total_unique_words
 
 
     # Generate the classification model
     model_file = open(model_filename, 'w')
-    model_file.write("vocabulary_size={0}\n".format(total_unique_words))
-    model_file.write("number_of_classes={0}\n".format(len(classes)))
+    model_file.write("{0} vocabulary_size\n".format(total_unique_words))
+    model_file.write("{0} total_words\n".format(total_words))
+    model_file.write("{0} number_of_classes\n".format(len(classes)))
 
     total_documents = 0
     for class_type in classes:
         total_documents += class_type.frequency
-    model_file.write("number_of_documents={0}\n".format(total_documents))
+    model_file.write("{0} number_of_documents\n".format(total_documents))
 
 
     for class_type in classes:
-        model_file.write("class_name={0} class_frequency={1} class_unique_words={2} class_total_words={3}\n".format(class_type.name, class_type.frequency, class_type.unique_words, class_type.total_words))
-
+        model_file.write("{0} {1} {2}\n".format(class_type.name, class_type.frequency, class_type.total_words))
+    
     for class_type in classes:
-        model_file.write("class_name_{0}_vocabulary\n".format(class_type.name))
         for word in class_type.vocabulary:
-            model_file.write("word={0} word_frequency={1}\n".format(word, class_type.vocabulary[word]))
+            model_file.write("{0} {1}\n".format(word, class_type.vocabulary[word]))
 
 
 
