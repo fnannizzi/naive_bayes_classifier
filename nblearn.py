@@ -54,7 +54,7 @@ def train():
             classes[class_index].incr_frequency()
 
             for word in text.split(' '):
-                word = word.rstrip('\n')
+                word = word.rstrip('\n') # strip out newlines, which aren't handled well by the model
                 if (word == "") or (word == " "):
                     continue
                 
@@ -92,7 +92,7 @@ def train():
 
 
     for class_type in classes:
-        model_file.write("{0} {1} {2}\n".format(class_type.name, class_type.frequency, class_type.total_words))
+        model_file.write("{0} {1} {2} {3}\n".format(class_type.name, class_type.frequency, class_type.total_words, len(class_type.vocabulary)))
     
     for class_type in classes:
         for word in class_type.vocabulary:
