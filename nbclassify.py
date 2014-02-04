@@ -80,13 +80,13 @@ def classify():
             for class_type in classes:
                 p_word_given_class = 0
                 p_word_given_not_class = 0
-                num_appearances = 0
-                num_words = 0
                 #print num_documents
                 p_class = class_type.frequency/num_documents
                 p_not_class = (num_documents - class_type.frequency)/num_documents
                 #print "{0} p_class = {1}".format(class_type.name, p_class)
                 for word in line.split(' '):
+                    num_appearances = 0
+                    num_words = 0
                     if word in class_type.vocabulary:
                         p_word_given_class += log((class_type.vocabulary[word] + 1)/(class_type.total_words + vocabulary_size))
                     else:
@@ -104,10 +104,11 @@ def classify():
                         num_words += class_type2.total_words
             
                     p_word_given_not_class += log((num_appearances + 1)/(num_words + vocabulary_size))
-                            
 
                 # calculate probability for this class
-                p_class_given_document = (p_class * p_word_given_class)/((p_class * p_word_given_class) + (p_not_class * p_word_given_not_class))
+                #print "p_wgc = {0} p_wgnc = {1}".format(p_word_given_class, p_word_given_not_class)
+                p_class_given_document = 1 - ((0.5 * p_word_given_class)/((0.5 * p_word_given_class) + (0.5 * p_word_given_not_class)))
+                #p_class_given_document = (p_class * p_word_given_class)/((p_class * p_word_given_class) + (p_not_class * p_word_given_not_class))
                 p_classes.append(p_class_given_document)
                 #print p_class_given_document
 
@@ -121,10 +122,10 @@ def classify():
                 #print score
                 if score > p_classes[classified]:
                     classified = p_classes.index(score)
-                    print "Updated score!"
-                    print classes[p_classes.index(score)].name
+                    #print "Updated score!"
+                    #print classes[p_classes.index(score)].name
 
-            print classes[classified].name
+            print "Classified as {0}".format(classes[classified].name)
 
 
 classify()
