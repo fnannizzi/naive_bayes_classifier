@@ -55,8 +55,8 @@ def train():
 
             for word in text.split(' '):
                 word = word.rstrip('\n') # strip out newlines, which aren't handled well by the model
-                if (word == "") or (word == " "):
-                    continue
+                #if (word == "") or (word == " "):
+                #continue
                 
                 # increment the number of words in the class
                 classes[class_index].incr_total_words()
