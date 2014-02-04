@@ -1,8 +1,8 @@
 #! /bin/sh
 
-for f in SPAM_dev/*
+for f in SENTIMENT_dev/*
 do
     filename=${f##*/}
     filename=${filename%.*}
     echo ${filename%.*}
-done > spam_filenames.txt
+done > sentiment_filenames.txt
