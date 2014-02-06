@@ -8,8 +8,54 @@
 \date{1.28.14}
 \maketitle
 
-\section{Development, Parts I & II}
+\section{Development, Parts I and II}
 \subsection{Outside Resources}
-Having not used Python previously, I heavily relied on the Python 2.7.6 documentation to write my code. 
+Having not used Python previously, I heavily relied on the Python 2.7.6 documentation to write my code. I also needed help writing bash scripts to format and analyze the training and test sets, so I looked up various things like how to read a file line by line, or how to count the unique words in a file on stackoverflow.com. I can provide the scripts I used if there is any concern.
+
+\section{Analysis, Part III}
+\subsection{Scores, Part I}
+\subsubsection{SPAM scores}
+precision = 358/377 = 0.9496
+recall = 358/363 = 0.9862
+F-score = (2* 0.9496 * 0.9862)/ (0.9496 + 0.9862) = 0.9676
+
+\subsubsection{HAM scores}
+precision = 981/986 = 0.9949 
+recall = 981/1000 = 0.981
+F-score = (2 * 0.9949 * 0.981)/(0.9949 + 0.981) = 0.9879
+
+\subsubsection{NEG scores}
+precision = 1096/1346 = 0.8143
+recall = 1096/1254 = 0.8740
+F-score = (2 * 0.8143 * 0.8740)/(0.8143 + 0.8740) = 0.8431
+
+\subsubsection{POS scores}
+precision = 1022/1180 = 0.8661
+recall = 1022/1272 = 0.8035
+F-score = (2 * 0.8661 * 0.8035)/(0.8661 + 0.8035) = 0.8336
+
+\subsection{Scores, Part II}
+\subsubsection{SPAM scores}
+precision = 334/363 = 0.9201
+recall = 334/363 = 0.9201
+F-score = (2 * 0.9201 * 0.9201)/(0.9201 + 0.9201) = 0.9201
+
+\subsubsection{HAM scores}
+precision = 971/1000 = 0.971
+recall = 971/1000 = 0.971
+F-score = (2 * 0.971 * 0.971)/(0.971 + 0.971) = 0.971
+
+\subsubsection{NEG scores}
+precision = 955/1250 = 0.764
+recall = 955/1254 = 0.7616
+F-score = (2 * 0.764 * 0.7616)/(0.764 + 0.7616) = 0.7628
+
+\subsubsection{POS scores}
+precision = 977/1276 = 0.7657
+recall = 977/1272 = 0.7681
+F-score = (2 * 0.7657 * 0.7681)/(0.7657 + 0.7681) = 0.7669
+
+\subsection{Response}
+The scores decrease when only 10\% of the training data is used for training the classifiers. This is because the models developed by the classifiers are significantly more incomplete, and many words appear that are outside the vocabulary when trying to predict the class of new documents.
 
 \end{document}
