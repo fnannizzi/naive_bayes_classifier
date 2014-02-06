@@ -1,1 +1,0 @@
-cat "$@" | tr ' ' '\n'|sort|uniq -c
